@@ -21,6 +21,7 @@ jobs:
           server_port = 7000
           token = freefrp.net
           
+          
           [${{ secrets.ANY }}]
           type = tcp
           local_ip = 127.0.0.1
