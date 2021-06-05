@@ -1,8 +1,7 @@
-name: CI
+name: SSR
 
 on:
   push:
-    branches: always
 
 jobs:
   build:
