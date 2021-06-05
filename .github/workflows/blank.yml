@@ -1,0 +1,38 @@
+name: SSR
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run a multi-line script
+        run: |
+          sudo apt-get remove docker docker-engine docker.io containerd runc
+          sudo systemctl start docker
+          docker run -d --name ssr-with-net-speeder -p 8989:8989 malaohu/ssr-with-net-speeder -s 0.0.0.0 -p 8989 ${{ secrets.CONFIG }}
+          wget https://github.com/fatedier/frp/releases/download/v0.36.2/frp_0.36.2_linux_amd64.tar.gz
+          tar xzvf frp_0.36.2_linux_amd64.tar.gz
+          cd frp_0.36.2_linux_amd64
+          echo "[common]
+          server_addr = frp.freefrp.net
+          server_port = 7000
+          token = freefrp.net
+          
+          
+          [${{ secrets.ANY }}]
+          type = tcp
+          local_ip = 127.0.0.1
+          local_port = 8989
+          remote_port = ${{ secrets.PORT }}" > frpc.ini
+          setsid ./frpc -c ./frpc.ini &
+          sleep 5
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./meta
+          publish_branch: main
+          personal_token: ${{ secrets.TOKEN }}
