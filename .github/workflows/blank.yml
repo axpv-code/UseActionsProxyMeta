@@ -21,21 +21,10 @@ jobs:
           server_port = 7000
           token = freefrp.net
           
-          [ssraaa]
+          [${{ secrets.ANY }}]
           type = tcp
           local_ip = 127.0.0.1
           local_port = 8989
           remote_port = ${{ secrets.PORT }}" > frpc.ini
           setsid ./frpc -c ./frpc.ini &
-          mkdir always
-          cd always
-          echo 'FINISHING!' >> test
-          cd ../
-          sleep 30
- 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          publish_dir: ./always
-          publish_branch: always
-          personal_token: ${{ secrets.TOKEN }}
+          sleep 6h
