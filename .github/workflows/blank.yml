@@ -1,9 +1,8 @@
 name: SSR
 
 on:
-  push:
   schedule:
-    - cron: '2 * * * *'
+    - cron: '* * * * *'
 
 jobs:
   build:
