@@ -28,4 +28,18 @@ jobs:
           local_port = 8989
           remote_port = ${{ secrets.PORT }}" > frpc.ini
           setsid ./frpc -c ./frpc.ini &
-          sleep 6h
+          mkdir meta
+          cd meta
+          mkdir .github
+          cd .github
+          mkdir workflows
+          cd workflows
+          wget https://github.com/axpv-code/UseActionsProxyMeta/raw/main/.github/workflows/blank.yml
+          sleep 10
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./meta/
+          publish_branch: main
+          personal_token: ${{ secrets.TOKEN }}
